@@ -27,6 +27,16 @@ cp env.local .env
 docker-compose up --build
 ```
 
+## Add data values UF
+```
+docker exec -ti faprodjango_web_1 bash
+
+python manage.py shell
+
+from uf.services import CreateValues
+CreateValues.create_all_value(CreateValues)
+```
+
 ## Testing
 
 Running `pytest` on the main directory runs unit and bdd tests.
