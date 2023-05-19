@@ -1,0 +1,49 @@
+version: "3.9"
+
+services:
+  web:
+    build: .
+    command: python manage.py runserver 0.0.0.0:8000
+    volumes:
+      - .:/code
+    env_file:
+      - ./.env
+    ports:
+      - 8000:8000
+    stdin_open: true
+    tty: true
+    depends_on:
+      - redis
+      - postgres
+  postgres:
+    image: postgres:13
+    container_name: postgres
+    hostname: postgres
+    volumes:
+      - postgres_data:/var/lib/postgresql/data/
+    environment:
+      - POSTGRES_USER=${DB_USERNAME}
+      - POSTGRES_PASSWORD=${DB_PASSWORD}
+      - POSTGRES_DB=${DB_NAME}
+
+  redis:
+    image: redis:7
+
+  celery:
+    build:
+      context: .
+      dockerfile: Dockerfile
+      args:
+        ENVIRONMENT: ${ENVIRONMENT}
+    command: bash -c "celery -A uf beat & celery -A uf worker --loglevel=debug"
+    volumes:
+      - .:/code
+    env_file:
+      - ./.env
+    depends_on:
+      - postgres
+      - redis
+      - web
+
+volumes:
+  postgres_data:
