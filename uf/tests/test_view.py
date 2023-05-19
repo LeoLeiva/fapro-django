@@ -51,4 +51,4 @@ class APIUFTestClass(TestCase):
         response = self.client.get(url)
 
         self.assertEqual(response.status_code, status.HTTP_404_NOT_FOUND)
-        self.assertEqual(response.content.decode(), '{"detail":"Not found."}')
+        self.assertEqual(response.content.decode(), '{"detail":"No encontrado."}')
