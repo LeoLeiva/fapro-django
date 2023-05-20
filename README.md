@@ -18,7 +18,7 @@ cp faprodjango/config/settings/local_example.py faprodjango/config/settings/loca
 2. Create .env file that contains the environments variables
 
 ```
-cp env.local .env
+cp env.template .env
 ```
 
 3. Run project
